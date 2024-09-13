@@ -47,9 +47,47 @@ def dica_atualizar():
     dica_mensagem = f"A palavra tem {len(alvo)} letras.\n\n{dica_mensagem}"
 
 
-def validacao_escolha_usuario(menu_opcao):
+# Função para validar a entrada (input, 'menu_opcao') do usuário
+def validacao_input_usuario(menu_opcao):
+    # Verifica em 'letras_usadas' se a letra já foi inserida antes
+    if menu_opcao in letras_usadas:
+        print("Insira uma letra não usada anteriormente.")
+        return False
+    # Verifica se o tamanho da string 'menu_opcao' é igual a 1, ou seja, um carater. E se 'menu_opcao' não é um número
+    elif len(menu_opcao) == 1 and not menu_opcao.isdigit():
+        # Retorna True para que possa contabilizar a tentativa
+        return True
+    # Senão
+    else:
+        # Verifica se a quantidade de caracteres na string 'menu_opcao' é diferente de 1
+        if len(menu_opcao) != 1:
+            print("Insira apenas uma letra.")
+        # Senão, o usuário pressionou um número inválido
+        else:
+            print("Opção inválida")
+        return False
+
+
+# Função para verificar se a letra está na palavra do 'alvo'
+def verificacao_palpite(menu_opcao):
+    # Define a variável 'tentativas_falhas' como global para que ela possa ser alterada dentro da função. Como em python não tem ponteiro nativo, fizemos dessa forma para que fosse possível manipular o valor das variáveis
+    global tentativas_falhas
+    
+    # Verifica se o caracter inserido faz parte da palavra
+    if menu_opcao in alvo:
+        print(f"\n\nA letra '{menu_opcao}' está na palavra!")
+        # Atualiza a 'dica_mensagem' para exibir o caracter inserido
+        dica_atualizar()
+    # Senão
+    else:
+        print(f"\n\nA letra '{menu_opcao}' não está na palavra, tente novamente!")
+        # Incrementa a tentativa falha do usuário
+        tentativas_falhas += 1
+
+# Função para processar a escolha do usuário
+def processa_escolha_usuario(menu_opcao):
     # Define as seguintes variáveis como globais para que elas possam ser alteradas dentro da função. Como em python não tem ponteiro nativo, fizemos dessa forma para que fosse possível manipular o valor das variáveis
-    global dica_mensagem, dica_ativa
+    global dica_mensagem, dica_ativa, tentativas
     
     # Se o usuário escolher a opção igual a 1, a dica é exibida
     if menu_opcao == "1":
@@ -65,6 +103,16 @@ def validacao_escolha_usuario(menu_opcao):
     elif menu_opcao == "2":
         print("\nVocê desistiu do jogo.")
         return False
+    
+    # Se o usuário escolher uma opção que seja diferente de 1 e 2, o programa chama a função 'validacao_input_usuario()' e valida se o input é um caracter válido
+    elif validacao_input_usuario(menu_opcao):
+        # Adiciona o caracter em 'letras_usadas' com o método de lista 'append'
+        letras_usadas.append(menu_opcao)
+        # Incrementa a tentativa
+        tentativas += 1
+        # Chama a função 'verificacao_palpite()' para verificar se o caracter está na palavra mesmo ou não
+        verificacao_palpite()
+        limpar_terminal()
     
     # Senão, o terminal é limpo e volta para o loop perguntar novamente
     else:
@@ -82,9 +130,9 @@ def menu_opcoes():
     # Define menu_opcao com o input do usuário em lowercase
     menu_opcao = input("\nEscolha uma opção: ").lower()
 
-    # Chama a função 'validacao_escolha_usuario()' para verificar a escolha do usuário.
+    # Chama a função 'processa_escolha_usuario()' para verificar a escolha do usuário.
     # Após a verificação, o jogo continua ou não dependendo do retorno dessa função. Ela quem define se o loop será encerrado ou não
-    return validacao_escolha_usuario(menu_opcao)
+    return processa_escolha_usuario(menu_opcao)
 
 
 
