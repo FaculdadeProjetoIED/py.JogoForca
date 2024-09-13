@@ -175,7 +175,7 @@ def menu_opcoes():
     
     # Se 'dica_ativa' estiver ativa após o usuário pressionar 1, a dica será exibida até o fim do jogo
     if dica_ativa:
-        print(f"\n{dica_mensagem}\n")
+        print(f"\n{dica_mensagem}")
     
     # Define menu_opcao com o input do usuário em lowercase
     menu_opcao = input("\nEscolha uma opção: ").lower()
