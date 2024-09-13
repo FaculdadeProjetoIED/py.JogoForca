@@ -28,6 +28,8 @@ def dica_atualizar():
     # Define a variável 'dica_mensagem' como global para que ela possa ser alterada dentro da função. Como em python não tem ponteiro nativo, fizemos dessa forma para que fosse possível manipular o valor das variáveis
     global dica_mensagem
     
+    # Reseta a variável para que ela possa ser atualizada corretamente
+    dica_mensagem = ""
     # Para cada caracter dentro da variável 'alvo'
     for char in alvo:
         # Verifica se o caracter já foi inserido pelo usuário em 'letras_usadas'
