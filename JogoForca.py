@@ -1,3 +1,4 @@
+# ==================== Importações e definições gerais ====================
 # Importações
 from msvcrt import getch # Importação do Getch para a captura da tecla de confirmação do usuário
 import os # Importação do os para que o terminal possa ser limpo
@@ -15,6 +16,8 @@ dica_ativa = True
 dica_mensagem = ""
 
 
+
+# ==================== Controle - jogo da forca ====================
 
 # Função para limpar o terminal
 def limpar_terminal():
@@ -165,6 +168,7 @@ def processa_escolha_usuario(menu_opcao, acertou):
     # Retorna not da varíavel 'acertou' para poder encerrar o loop se o usuário ganhar o jogo
     return not acertou
 
+
 # Função para exibir o menu e obter a escolha do usuário
 def menu_opcoes():
     print("========== MENU DE OPÇÕES ==========")
@@ -184,6 +188,9 @@ def menu_opcoes():
     # Após a verificação, o jogo continua ou não dependendo do retorno dessa função. Ela quem define se o loop será encerrado ou não
     return processa_escolha_usuario(menu_opcao, acertou)
 
+
+
+# ==================== Incialização do jogo da forca ====================
 
 # Função principal do jogo da forca
 def main():
