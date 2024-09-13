@@ -18,19 +18,58 @@ dica_mensagem = ""
 
 # Função para limpar o terminal
 def limpar_terminal():
-    print("Pressione 'ENTER'para continuar.")
+    print("\nPressione 'ENTER'para continuar.")
     getch() # Captura a tecla de confirmação pessioanda pelo usuário
     os.system('cls') # cls, pois a máquina de desenvolvimento é windows
 
+
+# Função para exibir quantidade de letras da palavra
+def dica_atualizar():
+    # Define a variável 'dica_mensagem' como global para que ela possa ser alterada dentro da função. Como em python não tem ponteiro nativo, fizemos dessa forma para que fosse possível manipular o valor das variáveis
+    global dica_mensagem
+    
+    # Para cada caracter dentro da variável 'alvo'
+    for char in alvo:
+        # Verifica se o caracter já foi inserido pelo usuário em 'letras_usadas'
+        if char in letras_usadas:
+            # Se o caracter existe em 'letras_usadas', adiciona o caracter na string 'dica_mensagem'
+            dica_mensagem += char + ' '
+        # Verifica se o caracter é uma letra com o método 'isalpha()' do python.
+        elif char.isalpha():
+            # Se for uma letra, então adiciona '_ ' na string 'dica_mensagem'
+            dica_mensagem += "_ "
+        # Senão
+        else:
+            # Acrescenta apenas uma string vazia em 'dica_mensagem'
+            dica_mensagem += " "
+    
+    # 'dica_mensagem' é definida com a exibição de quantidade de letras a ela, acrescentada do 'desenho' no terminal
+    dica_mensagem = f"A palavra tem {len(alvo)} letras.\n\n{dica_mensagem}"
+
+
 def validacao_escolha_usuario(menu_opcao):
+    # Define as seguintes variáveis como globais para que elas possam ser alteradas dentro da função. Como em python não tem ponteiro nativo, fizemos dessa forma para que fosse possível manipular o valor das variáveis
+    global dica_mensagem, dica_ativa
+    
+    # Se o usuário escolher a opção igual a 1, a dica é exibida
     if menu_opcao == "1":
-        print("\nDica")
+        # Atualiza a 'dica_mensagem'
+        dica_atualizar()
+        # Imprime a 'dica_mensagem'
+        print(f"\n\n{dica_mensagem}")
+        # Define a 'dica_ativa' como True para que a dica possa ser exibida durante todo o jogo
+        dica_ativa = True
         limpar_terminal()
+        
+    # Se o usuário escolher a opção igual a 2, o programa é encerrado por desistencia
     elif menu_opcao == "2":
         print("\nVocê desistiu do jogo.")
         return False
+    
+    # Senão, o terminal é limpo e volta para o loop perguntar novamente
     else:
         limpar_terminal()
+
 
 # Função para exibir o menu e obter a escolha do usuário
 def menu_opcoes():
