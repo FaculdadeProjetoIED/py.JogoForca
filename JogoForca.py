@@ -121,12 +121,18 @@ def verificacao_vitoria():
 
 
 # Função para processar a escolha do usuário
-def processa_escolha_usuario(menu_opcao):
+def processa_escolha_usuario(menu_opcao, acertou):
     # Define as seguintes variáveis como globais para que elas possam ser alteradas dentro da função. Como em python não tem ponteiro nativo, fizemos dessa forma para que fosse possível manipular o valor das variáveis
     global dica_mensagem, dica_ativa, tentativas
     
+    # Verifica se o usuário atigiu o limite de 6 tentativas falhas
+    if tentativas_falhas >= 5:
+        limpar_terminal()
+        exibe_resultado(acertou)
+        return False
+    
     # Se o usuário escolher a opção igual a 1, a dica é exibida
-    if menu_opcao == "1":
+    elif menu_opcao == "1":
         # Atualiza a 'dica_mensagem'
         dica_atualizar()
         # Imprime a 'dica_mensagem'
@@ -154,6 +160,8 @@ def processa_escolha_usuario(menu_opcao):
     else:
         limpar_terminal()
 
+    # Retorna not da varíavel 'acertou' para poder encerrar o loop se o usuário ganhar o jogo
+    return not acertou
 
 # Função para exibir o menu e obter a escolha do usuário
 def menu_opcoes():
@@ -163,13 +171,16 @@ def menu_opcoes():
     print("Para continuar jogando, pressione qualquer tecla de A a Z.")
     print(f"\nTentativas: {tentativas}\nErros: {tentativas_falhas}/6") # Exibe a quantidade de tentativas e de erros
     
+    # Se 'dica_ativa' estiver ativa após o usuário pressionar 1, a dica será exibida até o fim do jogo
+    if dica_ativa:
+        print(f"\n{dica_mensagem}\n")
+    
     # Define menu_opcao com o input do usuário em lowercase
     menu_opcao = input("\nEscolha uma opção: ").lower()
 
     # Chama a função 'processa_escolha_usuario()' para verificar a escolha do usuário.
     # Após a verificação, o jogo continua ou não dependendo do retorno dessa função. Ela quem define se o loop será encerrado ou não
-    return processa_escolha_usuario(menu_opcao)
-
+    return processa_escolha_usuario(menu_opcao, acertou)
 
 
 # Função principal do jogo da forca
