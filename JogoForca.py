@@ -78,11 +78,47 @@ def verificacao_palpite(menu_opcao):
         print(f"\n\nA letra '{menu_opcao}' está na palavra!")
         # Atualiza a 'dica_mensagem' para exibir o caracter inserido
         dica_atualizar()
+        # Verifica se o usuário ganhou o jogo. Se sim, encerra o programa
+        if verificacao_vitoria():
+            return
     # Senão
     else:
         print(f"\n\nA letra '{menu_opcao}' não está na palavra, tente novamente!")
         # Incrementa a tentativa falha do usuário
         tentativas_falhas += 1
+
+
+# Função para exibir o resultado do jogo
+def exibe_resultado(acertou):
+    # Verifica se o usuário acertou a palavra
+    if acertou:
+        print("Parabéns. Você ganhou!")
+        print(f"Com {tentativas} tentativas.")
+    # Senão
+    else:
+        print("Perdeu!")
+        print("A palavra era:", alvo)
+
+
+# Função para verificar se o usuário ganhou o jogo
+def verificacao_vitoria():
+    # Define a variável 'acertou' como global para que ela possa ser alterada dentro da função. Como em python não tem ponteiro nativo, fizemos dessa forma para que fosse possível manipular o valor das variáveis
+    global acertou
+    
+    # letra in letras_usadas verifica se a letra já foi adivinhada.
+    # not letra.isalpha() verifica se o caractere não é uma letra (por exemplo, espaços ou pontuação).
+    # Se todas as letras da palavra alvo atenderem a uma dessas condições, all(...) retorna True
+    if all(letra in letras_usadas or not letra.isalpha() for letra in alvo):
+        # Se todas as letras foram adivinhadas corretamente, 'acertou' é definido como True
+        acertou = True
+        limpar_terminal()
+        # Exibe o resultado final do jogo (ganhou ou perdeu)
+        exibe_resultado(acertou)
+        # Retorna 'True' para indicar que o jogo foi vencido e o loop principal deve terminar.
+        return True
+    # Se ainda existir letras não adivinhadas, o jogo continua, retornando 'False'.
+    return False
+
 
 # Função para processar a escolha do usuário
 def processa_escolha_usuario(menu_opcao):
@@ -111,7 +147,7 @@ def processa_escolha_usuario(menu_opcao):
         # Incrementa a tentativa
         tentativas += 1
         # Chama a função 'verificacao_palpite()' para verificar se o caracter está na palavra mesmo ou não
-        verificacao_palpite()
+        verificacao_palpite(menu_opcao)
         limpar_terminal()
     
     # Senão, o terminal é limpo e volta para o loop perguntar novamente
