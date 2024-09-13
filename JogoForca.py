@@ -120,9 +120,9 @@ def verificacao_vitoria():
         # Exibe o resultado final do jogo (ganhou ou perdeu)
         exibe_resultado(acertou)
         # Retorna 'True' para indicar que o jogo foi vencido e o loop principal deve terminar.
-        return True
+        return True # O jogo foi vencido
     # Se ainda existir letras não adivinhadas, o jogo continua, retornando 'False'.
-    return False
+    return False # O jogo ainda não foi vencido
 
 
 # Função para processar a escolha do usuário
@@ -133,7 +133,7 @@ def processa_escolha_usuario(menu_opcao, acertou):
     # Verifica se o usuário atigiu o limite de 6 tentativas falhas
     if tentativas_falhas >= 5:
         limpar_terminal()
-        exibe_resultado(acertou)
+        exibe_resultado(False)
         return False
     
     # Se o usuário escolher a opção igual a 1, a dica é exibida
@@ -159,6 +159,9 @@ def processa_escolha_usuario(menu_opcao, acertou):
         tentativas += 1
         # Chama a função 'verificacao_palpite()' para verificar se o caracter está na palavra mesmo ou não
         verificacao_palpite(menu_opcao)
+        # Verifica se o jogo foi vencido
+        if acertou:
+            return False
         limpar_terminal()
     
     # Senão, o terminal é limpo e volta para o loop perguntar novamente
