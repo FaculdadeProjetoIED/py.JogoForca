@@ -54,7 +54,7 @@ O jogo escolhe uma palavra secreta e o jogador deve adivinhar as letras. Para ca
 python JogosForca.py run
 ```
 
-Ou acesse e execute o código no <a href="https://colab.research.google.com/drive/1F6J3zDOhrzuiIsPOyaB9o0SMNHfuz4kp?usp=sharing">Google Colab</a>
+Ou acesse e execute o código no <a href="https://colab.research.google.com/drive/1F6J3zDOhrzuiIsPOyaB9o0SMNHfuz4kp?usp=sharing" target="_blank">Google Colab</a>
 
 ## Licença
 
