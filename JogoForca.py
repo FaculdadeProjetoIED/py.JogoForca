@@ -206,8 +206,5 @@ def main():
         # Define loop com o valor retornado da função 'menu_opcoes()'
         menu_loop = menu_opcoes()
 
-
-
-# ==================== Inicialização do jogo ====================
 # Executa a função main
 main()
