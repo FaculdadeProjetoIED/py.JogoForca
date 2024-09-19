@@ -204,7 +204,8 @@ def main():
         # Define loop com o valor retornado da função 'menu_opcoes()'
         menu_loop = menu_opcoes()
 
-# Verifica se o programa é executado diretamente
-if __name__ == "__main__":
-    # Chama a função principal
-    main()
+
+
+# ==================== Inicialização do jogo ====================
+# Executa a função main
+main()
