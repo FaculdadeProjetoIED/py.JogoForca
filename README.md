@@ -4,7 +4,7 @@ Este projeto foi desenvolvido para a disciplina "Projeto Interdisciplinar de Est
 
 - @vitoroliveirasilva
 - @RyanJacob431
-- @RyanJacob431
+- @ThomazGC
 
 ## Objetivo
 O objetivo deste projeto é criar um jogo da forca utilizando implementações que envolvam estruturas de dados. Através deste projeto, buscamos aplicar os conhecimentos adquiridos em aula, desenvolvendo uma aplicação prática e interativa.
