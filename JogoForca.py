@@ -159,8 +159,8 @@ def processa_escolha_usuario(menu_opcao, acertou):
         tentativas += 1
         # Chama a função 'verificacao_palpite()' para verificar se o caracter está na palavra mesmo ou não
         verificacao_palpite(menu_opcao)
-        # Verifica se o jogo foi vencido
-        if acertou:
+        # Verifica se o usuário ganhou
+        if verificacao_vitoria():
             return False
         limpar_terminal()
     
@@ -178,7 +178,6 @@ def menu_opcoes():
     print("Para receber uma dica, pressione 1;")
     print("Para desistir do jogo, pressione 2;")
     print("Para continuar jogando, pressione qualquer tecla de A a Z.")
-    print(f"\nTentativas: {tentativas}\nErros: {tentativas_falhas}/6") # Exibe a quantidade de tentativas e de erros
     
     # Se 'dica_ativa' estiver ativa após o usuário pressionar 1, a dica será exibida até o fim do jogo
     if dica_ativa:
