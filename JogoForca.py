@@ -178,6 +178,7 @@ def menu_opcoes():
     print("Para receber uma dica, pressione 1;")
     print("Para desistir do jogo, pressione 2;")
     print("Para continuar jogando, pressione qualquer tecla de A a Z.")
+    print(f"\nLetras já utilizadas: {', '.join(letras_usadas)}\nErros: {tentativas_falhas}/6") # Exibe as letras já usadas e a quantidade de erros
     
     # Se 'dica_ativa' estiver ativa após o usuário pressionar 1, a dica será exibida até o fim do jogo
     if dica_ativa:
