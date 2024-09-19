@@ -51,7 +51,7 @@ O jogo escolhe uma palavra secreta e o jogador deve adivinhar as letras. Para ca
 3. Execute o arquivo principal:
 
 ```bash
-python JogosForca.py
+python JogosForca.py run
 ```
 
 ## Licença
