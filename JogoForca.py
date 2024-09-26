@@ -110,19 +110,25 @@ def verificacao_vitoria():
     # Define a variável 'acertou' como global para que ela possa ser alterada dentro da função. Como em python não tem ponteiro nativo, fizemos dessa forma para que fosse possível manipular o valor das variáveis
     global acertou
     
-    # letra in letras_usadas verifica se a letra já foi adivinhada.
-    # not letra.isalpha() verifica se o caractere não é uma letra (por exemplo, espaços ou pontuação).
-    # Se todas as letras da palavra alvo atenderem a uma dessas condições, all(...) retorna True
-    if all(letra in letras_usadas or not letra.isalpha() for letra in alvo):
-        # Se todas as letras foram adivinhadas corretamente, 'acertou' é definido como True
-        acertou = True
+
+    todas_letras_validadas = True
+    # Para cada letra em 'alvo'
+    for letra in alvo:
+        # Verifica se a letra é váida (ignora espaços e pontuações) e se a letra não existe nas letras já inseridas
+        if letra.isalpha() and letra not in letras_usadas:
+            todas_letras_validadas = False # Se a condição for verdadeira, a validação é definida como False
+            break # Para o for
+    
+    # Se todas as letras foram acertadas
+    if todas_letras_validadas:
+        # Limpa o terminal e define a variável de acerto como True
         limpar_terminal()
-        # Exibe o resultado final do jogo (ganhou ou perdeu)
+        acertou = True
+        # Exibe pro usuário a vitória
         exibe_resultado(acertou)
-        # Retorna 'True' para indicar que o jogo foi vencido e o loop principal deve terminar.
-        return True # O jogo foi vencido
-    # Se ainda existir letras não adivinhadas, o jogo continua, retornando 'False'.
-    return False # O jogo ainda não foi vencido
+        return True  # Retorna True, pois o usuário ganhou o jogo
+    else:
+        return False  # O jogo ainda não foi vencido
 
 
 # Função para processar a escolha do usuário
