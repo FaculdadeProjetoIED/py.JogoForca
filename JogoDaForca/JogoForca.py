@@ -258,7 +258,6 @@ def jogo_forca(categoria):
     dica_mensagem = ""
     
     alvo = unidecode(random.choice(PALAVRAS[f"{categoria}"])["Palavra"]).upper()
-    print(alvo)
         
     # Define a variável menu_jogo_loop como True para poder iniciar o loop de interação com o usuário
     menu_jogo_loop = True
