@@ -10,16 +10,74 @@ def limpar_terminal():
     getch() # Captura a tecla de confirmação pessioanda pelo usuário
     os.system('cls') # cls, pois a máquina de desenvolvimento é windows
 
+
+# Função para processar a categoria escolhida pelo usuário
+def processa_categoria_escolhida(categoria):
+    
+    # Dicionário com as categorias mapeadas
+    categorias = {
+        1: "Países",
+        2: "Verbos",
+        3: "Animais",
+        4: "Frutas"
+    }
+    
+    # Se a entrada do usuário for um número válido
+    if categoria in [0, 1, 2, 3, 4]:
+        # Verifica se não é a opção de voltar ao menu
+        if not categoria == 0:
+            # Obtem a categoria no dicionário de acordo com o valor
+            nome_categoria = categorias.get(categoria)
+            limpar_terminal() 
+            # Função para iniciar o jogo, passando a categoria como parametro
+            jogo_forca(nome_categoria)
+        else:
+            print("Voltando para o menu")
+            limpar_terminal()
+            # Encerra o loop, voltando assim para o menup principal
+            return False
+    else:
+        print("\n\nInsira uma opção válida.")
+        limpar_terminal()
+        # Mantem o loop ativo
+        return True
+
+
+def obtem_categoria():
+    print("========== CATEGORIAS ==========")
+    print("\nVoltar ao menu = 0;")
+    print("\nPaíses = 1;")
+    print("Verbos = 2;")
+    print("Animais = 3;")
+    print("Frutas = 4.")
+
+    # Try adicionado para capturar erros na conversão da entrada do usuário para um inteiro
+    try:
+        # Define categoria com o input do usuário
+        categoria = int(input("\nEscolha uma opção: "))
+    except:
+        print("\n\nInsira uma opção válida.")
+        limpar_terminal()
+        # Mantem o loop ativo
+        return True
+    
+    return processa_categoria_escolhida(categoria)
+
+
 # Função para processar a escolha do usuário
 def processa_escolha_usuario(menu_opcao):
     
-    # Se a entrada do usuário foi um número inteiro de apenas 1 caractere
+    # Se a entrada do usuário for um número válido
     if menu_opcao in [1, 2]:
         # Se o usuário escolher a opção igual a 1, o jogo inicia
         if menu_opcao == 1:
-            limpar_terminal()
+            limpar_terminal()            
             # Inicia o jogo da forca
-            jogo_forca()
+            # A função obter categoria, traz as opções disponíveis dentro da categoria selecionada na função
+            menu_categoria_loop= True
+            while menu_categoria_loop:
+                # Define loop com o valor retornado da função 'obtem_categoria()'
+                menu_categoria_loop = obtem_categoria()
             # Mantem o loop ativo
             return True
         # Se o usuário escolher a opção igual a 2, o jogo é encerrado
@@ -50,6 +108,7 @@ def menu():
     print("\nPara jogar, pressione 1;")
     print("Para sair do jogo, pressione 2.\n")
     
+    # Try adicionado para capturar erros na conversão da entrada do usuário para um inteiro
     try:
         # Define menu_opcao com o input do usuário
         menu_opcao = int(input("\nEscolha uma opção: "))

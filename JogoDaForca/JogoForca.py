@@ -4,20 +4,7 @@ from msvcrt import getch # Importação do Getch para a captura da tecla de conf
 import os # Importação do os para que o terminal possa ser limpo
 import random # Importação para poder sortear as palavras
 from unidecode import unidecode # Importação para remover ascentuação das letras e palavras
-from JogoDaForca.palavras import PALAVRAS # Importa a lista 'PALAVRAS' do arquivo 'palavras.py'
-
-# Definições
-alvo = unidecode(random.choice(PALAVRAS)).upper()
-letras_usadas = []
-tentativas = 0
-# Variável para definir a quantidade de erros do usuário
-tentativas_falhas = 0
-acertou = False
-# Variável para definir se a dica será exibida ou não
-dica_ativa = False
-# Variável para definir a string da dica para poder ser impressa
-dica_mensagem = ""
-
+from JogoDaForca.palavras import PALAVRAS # Importação do dicionário de palavras
 
 
 # ==================== Controle - jogo da forca ====================
@@ -32,7 +19,7 @@ def limpar_terminal():
 # Função para exibir quantidade de letras da palavra
 def dica_atualizar():
     # Define a variável 'dica_mensagem' como global para que ela possa ser alterada dentro da função. Como em python não tem ponteiro nativo, fizemos dessa forma para que fosse possível manipular o valor das variáveis
-    global dica_mensagem
+    global dica_mensagem, alvo
     
     # Reseta a variável para que ela possa ser atualizada corretamente
     dica_mensagem = ""
@@ -112,7 +99,7 @@ def exibe_resultado(acertou):
 # Função para verificar se o usuário ganhou o jogo
 def verificacao_vitoria():
     # Define a variável 'acertou' como global para que ela possa ser alterada dentro da função. Como em python não tem ponteiro nativo, fizemos dessa forma para que fosse possível manipular o valor das variáveis
-    global acertou
+    global acertou, alvo
     
 
     todas_letras_validadas = True
@@ -228,7 +215,7 @@ def desenho_forca(tentativas_falhas):
 
 
 # Função para exibir o menu e obter a escolha do usuário
-def menu_jogo():
+def menu_jogo(categoria):
     print("========== MENU DE OPÇÕES ==========")
     print("Para receber uma dica, pressione 1;")
     print("Para desistir do jogo, pressione 2;")
@@ -244,7 +231,8 @@ def menu_jogo():
         print(f"\n{dica_mensagem}")
     
     # Define menu_opcao com o input do usuário em uppercase
-    menu_opcao = unidecode(input("\nEscolha uma opção: ")).upper()
+    print(f"\nCategoria: {categoria}")
+    menu_opcao = unidecode(input("Escolha uma opção: ")).upper()
 
     # Chama a função 'processa_escolha_usuario()' para verificar a escolha do usuário.
     # Após a verificação, o jogo continua ou não dependendo do retorno dessa função. Ela quem define se o loop será encerrado ou não
@@ -255,12 +243,28 @@ def menu_jogo():
 # ==================== Incialização do jogo da forca ====================
 
 # Função principal do jogo da forca
-def jogo_forca():
+def jogo_forca(categoria):
+    global alvo, letras_usadas, tentativas, tentativas_falhas, acertou, dica_ativa, dica_mensagem
+    
+    alvo = None
+    letras_usadas = []
+    tentativas = 0
+    # Variável para definir a quantidade de erros do usuário
+    tentativas_falhas = 0
+    acertou = False
+    # Variável para definir se a dica será exibida ou não
+    dica_ativa = False
+    # Variável para definir a string da dica para poder ser impressa
+    dica_mensagem = ""
+    
+    alvo = unidecode(random.choice(PALAVRAS[f"{categoria}"])["Palavra"]).upper()
+    print(alvo)
+        
     # Define a variável menu_jogo_loop como True para poder iniciar o loop de interação com o usuário
     menu_jogo_loop = True
     # Loop para chamar o menu após cada tentativa
     while menu_jogo_loop:
         # Define loop com o valor retornado da função 'menu_jogo()'
-        menu_jogo_loop = menu_jogo()
+        menu_jogo_loop = menu_jogo(categoria)
     
     limpar_terminal()
