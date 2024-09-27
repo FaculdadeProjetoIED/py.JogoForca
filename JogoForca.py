@@ -139,6 +139,7 @@ def processa_escolha_usuario(menu_opcao, acertou):
     
     # Verifica se o usuário atigiu o limite de 6 tentativas falhas
     if tentativas_falhas >= 5:
+        verificacao_palpite(menu_opcao)
         limpar_terminal()
         exibe_resultado(False)
         return False
