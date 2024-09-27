@@ -96,12 +96,13 @@ def verificacao_palpite(menu_opcao):
 # Função para exibir o resultado do jogo
 def exibe_resultado(acertou):
     # Verifica se o usuário acertou a palavra
+    desenho_forca(tentativas_falhas)
     if acertou:
-        print("Parabéns. Você ganhou!")
+        print("\n\nParabéns. Você ganhou!")
         print(f"Com {tentativas} tentativas.")
     # Senão
     else:
-        print("Perdeu!")
+        print("\n\nPerdeu!")
         print("A palavra era:", alvo)
 
 
@@ -178,6 +179,50 @@ def processa_escolha_usuario(menu_opcao, acertou):
     return not acertou
 
 
+def desenho_forca(tentativas_falhas):
+    print("  _______     ")
+    print(" |/      |    ")
+
+    if (tentativas_falhas == 1):
+        print(" |      (_)   ")
+        print(" |            ")
+        print(" |            ")
+        print(" |            ")
+    elif (tentativas_falhas == 2):
+        print(" |      (_)   ")
+        print(" |      \|    ")
+        print(" |            ")
+        print(" |            ")
+    elif (tentativas_falhas == 3):
+        print(" |      (_)   ")
+        print(" |      \|/   ")
+        print(" |            ")
+        print(" |            ")
+    elif (tentativas_falhas == 4):
+        print(" |      (_)   ")
+        print(" |      \|/   ")
+        print(" |       |    ")
+        print(" |            ")
+    elif (tentativas_falhas == 5):
+        print(" |      (_)   ")
+        print(" |      \|/   ")
+        print(" |       |    ")
+        print(" |      /     ")
+    elif (tentativas_falhas == 6):
+        print(" |      (_)   ")
+        print(" |      \|/   ")
+        print(" |       |    ")
+        print(" |      / \   ")
+    else:
+        print(" |")
+        print(" |")
+        print(" |")
+        print(" |")
+
+    print(" |            ")
+    print("_|___         ")
+
+
 # Função para exibir o menu e obter a escolha do usuário
 def menu_opcoes():
     print("========== MENU DE OPÇÕES ==========")
@@ -187,6 +232,8 @@ def menu_opcoes():
     if letras_usadas:
         # Exibe as letras já usadas e a quantidade de erros
         print(f"\nLetras já utilizadas: {', '.join(letras_usadas)}\nErros: {tentativas_falhas}/6")
+        
+    desenho_forca(tentativas_falhas)
     
     # Se 'dica_ativa' estiver ativa após o usuário pressionar 1, a dica será exibida até o fim do jogo
     if dica_ativa:
