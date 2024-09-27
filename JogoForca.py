@@ -2,6 +2,7 @@
 # Importações
 from msvcrt import getch # Importação do Getch para a captura da tecla de confirmação do usuário
 import os # Importação do os para que o terminal possa ser limpo
+import random # Importação para poder sortear as palavras
 
 # Definições
 alvo = "hangman"
@@ -240,8 +241,8 @@ def menu_opcoes():
     if dica_ativa:
         print(f"\n{dica_mensagem}")
     
-    # Define menu_opcao com o input do usuário em lowercase
-    menu_opcao = input("\nEscolha uma opção: ").lower()
+    # Define menu_opcao com o input do usuário em uppercase
+    menu_opcao = input("\nEscolha uma opção: ").upper()
 
     # Chama a função 'processa_escolha_usuario()' para verificar a escolha do usuário.
     # Após a verificação, o jogo continua ou não dependendo do retorno dessa função. Ela quem define se o loop será encerrado ou não
