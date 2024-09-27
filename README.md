@@ -43,6 +43,7 @@ O jogo escolhe uma palavra secreta e o jogador deve adivinhar as letras. Para ca
 ## Requisitos
 
 - Python 3 ou superior instalado no sistema.
+- Biblioteca 'Unidecode' instalada no sistema.
 
 ## Como rodar o jogo
 
