@@ -4,7 +4,7 @@ from msvcrt import getch # Importação do Getch para a captura da tecla de conf
 import os # Importação do os para que o terminal possa ser limpo
 import random # Importação para poder sortear as palavras
 from unidecode import unidecode # Importação para remover ascentuação das letras e palavras
-from palavras import PALAVRAS # Importa a lista 'PALAVRAS' do arquivo 'palavras.py'
+from JogoDaForca.palavras import PALAVRAS # Importa a lista 'PALAVRAS' do arquivo 'palavras.py'
 
 # Definições
 alvo = unidecode(random.choice(PALAVRAS)).upper()
@@ -228,7 +228,7 @@ def desenho_forca(tentativas_falhas):
 
 
 # Função para exibir o menu e obter a escolha do usuário
-def menu_opcoes():
+def menu_jogo():
     print("========== MENU DE OPÇÕES ==========")
     print("Para receber uma dica, pressione 1;")
     print("Para desistir do jogo, pressione 2;")
@@ -244,7 +244,7 @@ def menu_opcoes():
         print(f"\n{dica_mensagem}")
     
     # Define menu_opcao com o input do usuário em uppercase
-    menu_opcao = input("\nEscolha uma opção: ").upper()
+    menu_opcao = unidecode(input("\nEscolha uma opção: ")).upper()
 
     # Chama a função 'processa_escolha_usuario()' para verificar a escolha do usuário.
     # Após a verificação, o jogo continua ou não dependendo do retorno dessa função. Ela quem define se o loop será encerrado ou não
@@ -255,13 +255,12 @@ def menu_opcoes():
 # ==================== Incialização do jogo da forca ====================
 
 # Função principal do jogo da forca
-def main():
-    # Define a variável menu_loop como True para poder iniciar o loop de interação com o usuário
-    menu_loop = True
+def jogo_forca():
+    # Define a variável menu_jogo_loop como True para poder iniciar o loop de interação com o usuário
+    menu_jogo_loop = True
     # Loop para chamar o menu após cada tentativa
-    while menu_loop:
-        # Define loop com o valor retornado da função 'menu_opcoes()'
-        menu_loop = menu_opcoes()
-
-# Executa a função main
-main()
+    while menu_jogo_loop:
+        # Define loop com o valor retornado da função 'menu_jogo()'
+        menu_jogo_loop = menu_jogo()
+    
+    limpar_terminal()
