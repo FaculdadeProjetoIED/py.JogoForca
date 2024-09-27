@@ -3,9 +3,11 @@
 from msvcrt import getch # Importação do Getch para a captura da tecla de confirmação do usuário
 import os # Importação do os para que o terminal possa ser limpo
 import random # Importação para poder sortear as palavras
+from unidecode import unidecode # Importação para remover ascentuação das letras e palavras
+from palavras import PALAVRAS # Importa a lista 'PALAVRAS' do arquivo 'palavras.py'
 
 # Definições
-alvo = "hangman"
+alvo = unidecode(random.choice(PALAVRAS)).upper()
 letras_usadas = []
 tentativas = 0
 # Variável para definir a quantidade de erros do usuário
