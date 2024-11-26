@@ -43,19 +43,50 @@ O jogo escolhe uma palavra secreta e o jogador deve adivinhar as letras. Para ca
 ## Requisitos
 
 - Python 3 ou superior instalado no sistema.
-- Biblioteca 'Unidecode' instalada no sistema.
+- Ambiente virtual configurado para gerenciar dependências.
+- Dependências listadas no arquivo `requirements.txt`.
 
 ## Como rodar o jogo
 
-1. Clone o repositório ou baixe o arquivo do projeto.
-2. No terminal, navegue até o diretório do projeto.
-3. Execute o arquivo principal:
+1. **Clone o repositório ou baixe o arquivo do projeto:**
+
+```bash
+git clone https://github.com/FaculdadeProjetoIED/py.JogoForca.git
+```
+
+2. **Navegue até o diretório do projeto:**
+
+```bash
+cd py.JogoForca
+```
+
+3. **Crie e ative um ambiente virtual:**
+
+   - No Windows:
+     ```bash
+     python -m venv venv
+     venv\Scripts\activate
+     ```
+
+   - No Linux/Mac:
+     ```bash
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
+
+4. **Instale as dependências do projeto:**
+
+```bash
+pip install -r requirements.txt
+```
+
+5. **Execute o jogo:**
 
 ```bash
 python JogosForca.py run
 ```
 
-Ou acesse e execute o código no <a href="https://colab.research.google.com/drive/1F6J3zDOhrzuiIsPOyaB9o0SMNHfuz4kp?usp=sharing" target="_blank">Google Colab</a>
+### Alternativamente, acesse o código no [Google Colab](https://colab.research.google.com/drive/1F6J3zDOhrzuiIsPOyaB9o0SMNHfuz4kp?usp=sharing).
 
 ## Licença
 
