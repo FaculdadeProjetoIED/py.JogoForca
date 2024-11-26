@@ -53,10 +53,12 @@ def dica_atualizar():
 
 # Função para validar a entrada (input, 'menu_opcao') do usuário
 def validacao_input_usuario(menu_opcao):
+    # Verifica se a letra foi usada antes
     if menu_opcao in letras_usadas:
         print("Insira uma letra não usada anteriormente.")
         return False
-    elif len(menu_opcao) == 1 and not menu_opcao.isdigit():
+    # Verifica se o input é uma letra única
+    elif len(menu_opcao) == 1 and menu_opcao.isalpha():
         return True
     else:
         if len(menu_opcao) != 1:
@@ -69,10 +71,10 @@ def validacao_input_usuario(menu_opcao):
 # Função para verificar se a letra está na palavra do 'alvo'
 def verificacao_palpite(menu_opcao):
     global tentativas_falhas
-    if menu_opcao in alvo:
+    if menu_opcao in alvo:  # Verifica se a letra está na palavra
         print(f"\n\nA letra '{menu_opcao}' está na palavra!")
-        dica_atualizar()
-        if verificacao_vitoria():
+        dica_atualizar()  # Atualiza a dica com as letras corretas
+        if verificacao_vitoria():  # Verifica se o jogador ganhou
             return
     else:
         print(f"\n\nA letra '{menu_opcao}' não está na palavra, tente novamente!")
@@ -148,10 +150,77 @@ def jogo_forca():
     
     jogando = True
     while jogando:
-        print("\n\nMenu do Jogo")
-        print(f"Dica: {dica_mensagem}")
-        menu_opcao = input("\nDigite uma letra (ou 1 para dica, 2 para desistir): ")
-        jogando = processa_escolha_usuario(menu_opcao, acertou)
+        jogando = menu_jogando()
+
+
+# Função para exibir o desenho da forca baseado nas tentativas falhas
+def desenho_forca(tentativas_falhas):
+    print("  _______     ")
+    print(" |/      |    ")
+
+    if (tentativas_falhas == 1):
+        print(" |      (_)   ")
+        print(" |            ")
+        print(" |            ")
+        print(" |            ")
+    elif (tentativas_falhas == 2):
+        print(" |      (_)   ")
+        print(" |      \|    ")
+        print(" |            ")
+        print(" |            ")
+    elif (tentativas_falhas == 3):
+        print(" |      (_)   ")
+        print(" |      \|/   ")
+        print(" |            ")
+        print(" |            ")
+    elif (tentativas_falhas == 4):
+        print(" |      (_)   ")
+        print(" |      \|/   ")
+        print(" |       |    ")
+        print(" |            ")
+    elif (tentativas_falhas == 5):
+        print(" |      (_)   ")
+        print(" |      \|/   ")
+        print(" |       |    ")
+        print(" |      /     ")
+    elif (tentativas_falhas == 6):
+        print(" |      (_)   ")
+        print(" |      \|/   ")
+        print(" |       |    ")
+        print(" |      / \   ")
+    else:
+        print(" |")
+        print(" |")
+        print(" |")
+        print(" |")
+
+    print(" |            ")
+    print("_|___         ")
+
+
+# Função para exibir o menu e obter a escolha do usuário
+def menu_jogando():
+    print("========== MENU DE OPÇÕES ==========")
+    print("Para receber uma dica, pressione 1;")
+    print("Para desistir do jogo, pressione 2;")
+    print(alvo)
+    print("Para continuar jogando, pressione qualquer tecla de A a Z.")
+    if letras_usadas:
+        # Exibe as letras já usadas e a quantidade de erros
+        print(f"\nLetras já utilizadas: {', '.join(letras_usadas)}\nErros: {tentativas_falhas}/6")
+        
+    desenho_forca(tentativas_falhas)
+    
+    # Se 'dica_ativa' estiver ativa após o usuário pressionar 1, a dica será exibida até o fim do jogo
+    if dica_ativa:
+        print(f"\n{dica_mensagem}")
+
+    # Define menu_opcao com o input do usuário em lowercase
+    menu_opcao = unidecode(input("Escolha uma opção: ")).lower()
+    
+    # Chama a função 'processa_escolha_usuario()' para verificar a escolha do usuário.
+    # Após a verificação, o jogo continua ou não dependendo do retorno dessa função. Ela quem define se o loop será encerrado ou não
+    return processa_escolha_usuario(menu_opcao, acertou)
 
 
 # Função para processar a escolha do usuário no menu principal
