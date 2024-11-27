@@ -3,7 +3,6 @@
 from msvcrt import getch  # Importação do Getch para a captura da tecla de confirmação do usuário
 import os  # Importação do os para que o terminal possa ser limpo
 import requests # Importação para poder obter as palavras
-import random  # Importação para poder sortear as palavras
 from unidecode import unidecode  # Importação para remover acentuação das letras e palavras
 
 # ==================== Controle - jogo da forca ====================
