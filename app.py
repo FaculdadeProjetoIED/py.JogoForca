@@ -35,17 +35,18 @@ def nova_palavra():
         return None
 
 
-# Pn = (S+D)*(N+E)
+# Pn = (S+D)*(N+E)+C
 def calcular_pontuacao():
-    global alvo, complexidade_api, letras_usadas, tentativas_falhas
+    global alvo, complexidade_api, letras_usadas, tentativas_falhas, maior_sequencia
 
     S = len(alvo)  # Tamanho da palavra
     D = int(complexidade_api)  # Dificuldade (1, 2 ou 3)
     N = len([letra for letra in letras_usadas if letra in alvo])  # Tentativas assertivas
     E = 6 - tentativas_falhas  # Erros faltantes
+    C = maior_sequencia  # Bônus pelo maior combo de acertos
 
     # Calcula os pontos da partida atual
-    pontuacao_atual = (S + D) * (N + E)
+    pontuacao_atual = (S + D) * (N + E) + C
     return pontuacao_atual
 
 
@@ -95,19 +96,26 @@ def validacao_input_usuario(menu_opcao):
 
 # Função para verificar se a letra está na palavra do 'alvo'
 def verificacao_palpite(menu_opcao):
-    global tentativas_falhas
-    if menu_opcao in alvo:  # Verifica se a letra está na palavra
+    global tentativas_falhas, sequencia_atual, maior_sequencia
+
+    if menu_opcao in alvo:  # Palpite correto
         print(f"\n\nA letra '{menu_opcao}' está na palavra!")
-        dica_atualizar()  # Atualiza a dica com as letras corretas
+        dica_atualizar()
+        sequencia_atual += 1
+        if sequencia_atual > maior_sequencia:
+            maior_sequencia = sequencia_atual
         if verificacao_vitoria():  # Verifica se o jogador ganhou
             return
-    else:
+
+    else:  # Palpite errado
         print(f"\n\nA letra '{menu_opcao}' não está na palavra, tente novamente!")
         tentativas_falhas += 1
+        sequencia_atual = 0  # Zera a sequência
 
 
 # Função para exibir o resultado do jogo
 def exibe_resultado(acertou):
+    global maior_sequencia
     if acertou:
         # Calcula os pontos do ciclo atual
         pontos_ganhos = calcular_pontuacao()
@@ -115,6 +123,7 @@ def exibe_resultado(acertou):
         print("\n\nParabéns. Você ganhou!")
         print(f"Com {tentativas} tentativas.")
         print(f"Você ganhou {pontos_ganhos} pontos neste jogo!")
+        print(f"Bônus de combo (maior sequência de acertos): {maior_sequencia} pontos.")
     else:
         print("\n\nPerdeu!")
         print("A palavra era:", alvo)
@@ -172,7 +181,7 @@ def processa_escolha_usuario(menu_opcao, acertou):
 
 # Função principal do jogo da forca
 def jogo_forca():
-    global alvo, tentativas, tentativas_falhas, letras_usadas, dica_mensagem, dica_ativa, segunda_dica_ativa, acertou, categoria_api, complexidade_api, pontuacao_atual, pontos_atualizados
+    global alvo, tentativas, tentativas_falhas, letras_usadas, dica_mensagem, dica_ativa, segunda_dica_ativa, acertou, categoria_api, complexidade_api, pontuacao_atual, pontos_atualizados, sequencia_atual, maior_sequencia
     
     # Obtém a palavra da API
     json_api = nova_palavra()
@@ -191,7 +200,7 @@ def jogo_forca():
     # Remove acentos e converte para minúsculas
     alvo = unidecode(palavra_api.lower())
     tentativas, tentativas_falhas, letras_usadas = 0, 0, []
-    pontuacao_atual, pontos_atualizados = 0, False
+    sequencia_atual, maior_sequencia, pontuacao_atual, pontos_atualizados = 0, 0, 0, False
     dica_ativa, segunda_dica_ativa, acertou = False, False, False
     dica_atualizar()
     
