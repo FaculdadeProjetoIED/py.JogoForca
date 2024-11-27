@@ -1,18 +1,18 @@
 # ==================== Importações e definições gerais ====================
-# Importações
-from msvcrt import getch  # Importação do Getch para a captura da tecla de confirmação do usuário
-import os  # Importação do os para que o terminal possa ser limpo
-import requests # Importação para poder obter as palavras
-from unidecode import unidecode  # Importação para remover acentuação das letras e palavras
-import csv # Importação arquivos CSV
+import IPython
+from IPython.display import clear_output
+import requests
+from unidecode import unidecode
+import os
+import csv
+
 
 # ==================== Controle - jogo da forca ====================
 
-# Função para limpar o terminal
+# Função para simular a limpeza do terminal no Colab
 def limpar_terminal():
-    print("\nPressione 'ENTER' para continuar.")
-    getch()  # Captura a tecla de confirmação pressionada pelo usuário
-    os.system('cls')  # cls, pois a máquina de desenvolvimento é windows
+    print("\n" * 50)  # Simula limpeza com 50 quebras de linha
+    input("Pressione 'ENTER' para continuar.")
 
 
 # Obtém uma palavra aleatória para o jogo usando a API.
@@ -393,8 +393,6 @@ def menu():
 # Função principal
 def main():
     global Ptotal, pontuacoes_ciclos, pontos_atualizados, nome_jogador
-
-    os.system('cls')  # cls, pois a máquina de desenvolvimento é windows
 
     Ptotal, pontuacoes_ciclos, pontos_atualizados = 0, [], False
 
