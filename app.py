@@ -4,6 +4,7 @@ from msvcrt import getch  # Importação do Getch para a captura da tecla de con
 import os  # Importação do os para que o terminal possa ser limpo
 import requests # Importação para poder obter as palavras
 from unidecode import unidecode  # Importação para remover acentuação das letras e palavras
+import csv # Importação arquivos CSV
 
 # ==================== Controle - jogo da forca ====================
 
@@ -62,6 +63,65 @@ def atualizar_pontuacao(pontos_ciclo):
         pontos_atualizados = True
 
 
+# Função para salvar os dados no arquivo CSV
+def salvar_arquivo(arquivo_txt, dados):
+    with open(arquivo_txt, mode='w', newline='') as meuarquivo:
+        buff = csv.writer(meuarquivo)
+        for item in dados:
+            buff.writerow([item['id'], item['pontos']])
+
+
+# Função para ler o arquivo CSV
+def ler_arquivo(arquivo_txt):
+    dados = []
+    # Verifica se o arquivo existe
+    if os.path.exists(arquivo_txt):
+        with open(arquivo_txt, mode='r', newline='') as meuarquivo:
+            buff = csv.reader(meuarquivo)
+            for linha in buff:
+                if linha:
+                    id = linha[0]
+                    pontos = int(linha[1])
+                    dados.append({'id': id, 'pontos': pontos})
+    return dados
+
+
+# Função para atualizar o Top 5
+def atualizar_top5(arquivo_txt, novo_recorde):
+    # Lê os dados existentes
+    dados = ler_arquivo(arquivo_txt)
+    
+    # Verifica se o jogador já está no ranking
+    for dado in dados:
+        if dado['id'] == novo_recorde['id']:
+            # Atualiza a pontuação apenas se for maior
+            if novo_recorde['pontos'] > dado['pontos']:
+                dado['pontos'] = novo_recorde['pontos']
+            break
+    else:
+        # Adiciona um novo recorde se o jogador não estiver na lista
+        dados.append(novo_recorde)
+    
+    # Ordena por pontuação (decrescente)
+    dados = sorted(dados, key=lambda x: x['pontos'], reverse=True)
+    
+    # Mantém apenas os 5 melhores
+    dados = dados[:5]
+    
+    # Salva de volta no arquivo
+    salvar_arquivo(arquivo_txt, dados)
+    return dados
+
+
+# Função para perguntar o nome do usuário
+def obter_nome_jogador():
+    nome = input("Insira seu nome para começar o jogo: ").strip()
+    while not nome:
+        print("O nome não pode estar vazio. Tente novamente.")
+        nome = input("Insira seu nome para começar o jogo: ").strip()
+    return nome
+
+
 # Função para exibir quantidade de letras da palavra
 def dica_atualizar():
     global dica_mensagem, alvo  # Variáveis globais para manipulação dentro da função
@@ -112,9 +172,10 @@ def verificacao_palpite(menu_opcao):
         sequencia_atual = 0  # Zera a sequência
 
 
-# Função para exibir o resultado do jogo
+# Função para exibir o resultado do jogo e salvar recordes
 def exibe_resultado(acertou):
-    global maior_sequencia
+    global maior_sequencia, nome_jogador
+    
     if acertou:
         # Calcula os pontos do ciclo atual
         pontos_ganhos = calcular_pontuacao()
@@ -123,6 +184,14 @@ def exibe_resultado(acertou):
         print(f"Com {tentativas} tentativas.")
         print(f"Você ganhou {pontos_ganhos} pontos neste jogo!")
         print(f"Bônus de combo (maior sequência de acertos): {maior_sequencia} pontos.")
+
+        # Salva o recorde no arquivo Top 5
+        recorde = {"id": nome_jogador, "pontos": Ptotal}
+        top5 = atualizar_top5("top5.txt", recorde)
+        print("\n======== TOP 5 RECORDES ========")
+        for idx, rec in enumerate(top5, 1):
+            print(f"{idx}. Nome: {rec['id']}, Pontos: {rec['pontos']}")
+
     else:
         print("\n\nPerdeu!")
         print("A palavra era:", alvo)
@@ -181,7 +250,7 @@ def processa_escolha_usuario(menu_opcao, acertou):
 # Função principal do jogo da forca
 def jogo_forca():
     global alvo, tentativas, tentativas_falhas, letras_usadas, dica_mensagem, dica_ativa, segunda_dica_ativa, acertou, categoria_api, complexidade_api, pontuacao_atual, pontos_atualizados, sequencia_atual, maior_sequencia
-    
+
     # Obtém a palavra da API
     json_api = nova_palavra()
 
@@ -191,18 +260,18 @@ def jogo_forca():
     categoria_api = json_api.get("categoria")
     # Obtém a complexidade do JSON retornado
     complexidade_api = json_api.get("complexidade")
-    
+
     if palavra_api is None:
         print("Não foi possível obter uma palavra para o jogo.")
         return
-    
+
     # Remove acentos e converte para minúsculas
     alvo = unidecode(palavra_api.lower())
     tentativas, tentativas_falhas, letras_usadas = 0, 0, []
     sequencia_atual, maior_sequencia, pontuacao_atual, pontos_atualizados = 0, 0, 0, False
     dica_ativa, segunda_dica_ativa, acertou = False, False, False
     dica_atualizar()
-    
+
     jogando = True
     while jogando:
         jogando = menu_jogando()
@@ -323,11 +392,14 @@ def menu():
 
 # Função principal
 def main():
-    global Ptotal, pontuacoes_ciclos, pontos_atualizados
+    global Ptotal, pontuacoes_ciclos, pontos_atualizados, nome_jogador
 
     os.system('cls')  # cls, pois a máquina de desenvolvimento é windows
 
     Ptotal, pontuacoes_ciclos, pontos_atualizados = 0, [], False
+
+    # Solicita o nome do jogador antes de iniciar
+    nome_jogador = obter_nome_jogador()
 
     menu_loop = True
     while menu_loop:
