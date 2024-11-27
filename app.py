@@ -19,15 +19,13 @@ def limpar_terminal():
 def nova_palavra():
     try:
         # Faz a requisição diretamente ao endpoint
-        resposta = requests.get("https://faccamp.pythonanywhere.com/hangman-api/getword")
+        resposta = requests.get("https://faccamp.pythonanywhere.com/hangman-api/getdata")
 
         # Converte a resposta JSON em um dicionário Python
         dado = resposta.json()
 
-        # Obtém a palavra do campo correto no JSON retornado
-        palavra = dado.get("palavra")
-        if palavra:
-            return palavra
+        if dado:
+            return dado
         else:
             print("Erro: o campo 'palavra' não foi encontrado na resposta da API.")
             return None
@@ -107,7 +105,7 @@ def verificacao_vitoria():
 
 # Função para processar a escolha do usuário
 def processa_escolha_usuario(menu_opcao, acertou):
-    global dica_mensagem, dica_ativa, tentativas
+    global dica_mensagem, dica_ativa, tentativas, segunda_dica_ativa
     if tentativas_falhas >= 5:
         verificacao_palpite(menu_opcao)
         limpar_terminal()
@@ -121,6 +119,9 @@ def processa_escolha_usuario(menu_opcao, acertou):
     elif menu_opcao == "2":
         print("\nVocê desistiu do jogo.")
         return False
+    elif menu_opcao == "3":
+        segunda_dica_ativa = True
+        limpar_terminal()
     elif validacao_input_usuario(menu_opcao):
         letras_usadas.append(menu_opcao)
         tentativas += 1
@@ -135,17 +136,25 @@ def processa_escolha_usuario(menu_opcao, acertou):
 
 # Função principal do jogo da forca
 def jogo_forca():
-    global alvo, tentativas, tentativas_falhas, letras_usadas, dica_mensagem, dica_ativa, acertou
+    global alvo, tentativas, tentativas_falhas, letras_usadas, dica_mensagem, dica_ativa, segunda_dica_ativa, acertou, categoria_api
     
     # Obtém a palavra da API
-    palavra_api = nova_palavra()
+    json_api = nova_palavra()
+
+    # Obtém a palavra do JSON retornado
+    palavra_api = json_api.get("palavra")
+    # Obtém a categoria do JSON retornado
+    categoria_api = json_api.get("categoria")
+    # Obtém a complexidade do JSON retornado
+    complexidade_api = json_api.get("complexidade")
+    
     if palavra_api is None:
         print("Não foi possível obter uma palavra para o jogo.")
         return
     
     alvo = unidecode(palavra_api.lower())  # Remove acentos e converte para minúsculas
     tentativas, tentativas_falhas, letras_usadas = 0, 0, []
-    dica_ativa, acertou = False, False
+    dica_ativa, segunda_dica_ativa, acertou = False, False, False
     dica_atualizar()
     
     jogando = True
@@ -201,8 +210,11 @@ def desenho_forca(tentativas_falhas):
 # Função para exibir o menu e obter a escolha do usuário
 def menu_jogando():
     print("========== MENU DE OPÇÕES ==========")
-    print("Para receber uma dica, pressione 1;")
+    if not dica_ativa:
+        print("Para receber uma dica de duas, pressione 1;")
     print("Para desistir do jogo, pressione 2;")
+    if dica_ativa and not segunda_dica_ativa:
+        print("Para receber a segunda e ultima dica, pressione 3;")
     print(alvo)
     print("Para continuar jogando, pressione qualquer tecla de A a Z.")
     if letras_usadas:
@@ -214,6 +226,10 @@ def menu_jogando():
     # Se 'dica_ativa' estiver ativa após o usuário pressionar 1, a dica será exibida até o fim do jogo
     if dica_ativa:
         print(f"\n{dica_mensagem}")
+
+    # Se 'segunda_dica_ativa' estiver ativa após o usuário pressionar 3, a dica será exibida até o fim do jogo
+    if segunda_dica_ativa:
+        print(f"\nA categoria da palavra é: {categoria_api.capitalize()}")
 
     # Define menu_opcao com o input do usuário em lowercase
     menu_opcao = unidecode(input("Escolha uma opção: ")).lower()
