@@ -1,5 +1,1 @@
-Mirto,320
-Vitor,233
-Ryan,162
-Thomaz,156
 Teste,82

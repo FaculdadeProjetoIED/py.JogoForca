@@ -326,13 +326,17 @@ def desenho_forca(tentativas_falhas):
 def menu_jogando():
     print("========== MENU DE OPÇÕES ==========")
     print(f"Pontuação atual no jogo atual: {calcular_pontuacao()} pontos.")
+
     if not dica_ativa:
         print("Para receber uma dica de duas, pressione 1;")
+
     print("Para desistir do jogo, pressione 2;")
+
     if dica_ativa and not segunda_dica_ativa:
         print("Para receber a segunda e ultima dica, pressione 3;")
-    print(alvo)
+
     print("Para continuar jogando, pressione qualquer tecla de A a Z.")
+    
     if letras_usadas:
         # Exibe as letras já usadas e a quantidade de erros
         print(f"\nLetras já utilizadas: {', '.join(letras_usadas)}\nErros: {tentativas_falhas}/6")
