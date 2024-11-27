@@ -29,15 +29,20 @@ Este projeto é um jogo da forca implementado em Python, onde o jogador tenta ad
 - Validação das entradas do usuário para garantir que apenas letras válidas sejam inseridas.
 - Contador de tentativas erradas com limite de 6 erros.
 - Exibição de uma mensagem de vitória ou derrota ao final do jogo.
+- Sistema de pontuação total e por ciclos.
+- Arquivo de recordes com os 5 melhores recordes.
+- Integração com API Hangman para obter palavras e categorias para dicas.
 
 ## Como funciona
 
 O jogo escolhe uma palavra secreta e o jogador deve adivinhar as letras. Para cada letra correta, a palavra é atualizada e mostrada ao jogador. O jogador tem até 6 tentativas erradas antes de perder o jogo. A qualquer momento, o jogador pode solicitar uma dica ou desistir.
+Conforme o jogador vai acumulando pontos, esses são salvos no arquivo que contem as melhores pontuações.
 
 ### Opções no jogo
 
 - Pressionar **1**: Exibe uma dica, mostrando a quantidade de letras e as letras já adivinhadas.
 - Pressionar **2**: Desiste do jogo.
+- Pressionar **3**: Exibe a segunda dica, mostrando a categoria da palavra a ser adivinhada.
 - Pressionar uma letra (A-Z): Faz uma tentativa de adivinhar uma letra.
 
 ## Requisitos
