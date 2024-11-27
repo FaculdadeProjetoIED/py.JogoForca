@@ -11,8 +11,8 @@ import csv
 
 # Função para simular a limpeza do terminal no Colab
 def limpar_terminal():
-    print("\n" * 50)  # Simula limpeza com 50 quebras de linha
-    input("Pressione 'ENTER' para continuar.")
+    input("\nPressione 'ENTER' para continuar.")
+    clear_output(wait=True)  # Limpa a saída no Google Colab
 
 
 # Obtém uma palavra aleatória para o jogo usando a API.
