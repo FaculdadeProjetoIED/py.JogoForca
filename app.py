@@ -35,6 +35,21 @@ def nova_palavra():
         return None
 
 
+def calcular_pontuacao():
+    global pontuacao, alvo, complexidade_api, letras_usadas, tentativas_falhas
+    
+    # Variáveis necessárias
+    S = len(alvo)  # Tamanho da palavra
+    D = int(complexidade_api)  # Dificuldade (1, 2 ou 3)
+    N = len([letra for letra in letras_usadas if letra in alvo])  # Tentativas assertivas
+    E = 6 - tentativas_falhas  # Erros faltantes
+    
+    # Calcula os pontos
+    pontuacao_atual = (S + D) * (N + E)
+    pontuacao += pontuacao_atual  # Atualiza a pontuação global
+    return pontuacao_atual
+
+
 # Função para exibir quantidade de letras da palavra
 def dica_atualizar():
     global dica_mensagem, alvo  # Variáveis globais para manipulação dentro da função
@@ -82,11 +97,17 @@ def verificacao_palpite(menu_opcao):
 # Função para exibir o resultado do jogo
 def exibe_resultado(acertou):
     if acertou:
+        # Calcula os pontos do jogo atual
+        pontos_ganhos = calcular_pontuacao()
         print("\n\nParabéns. Você ganhou!")
         print(f"Com {tentativas} tentativas.")
+        print(f"Você ganhou {pontos_ganhos} pontos neste jogo!")
     else:
         print("\n\nPerdeu!")
         print("A palavra era:", alvo)
+
+    # Exibe pontuação total acumulada
+    print(f"Sua pontuação total acumulada: {pontuacao} pontos.")
 
 
 # Função para verificar se o usuário ganhou o jogo
@@ -136,7 +157,7 @@ def processa_escolha_usuario(menu_opcao, acertou):
 
 # Função principal do jogo da forca
 def jogo_forca():
-    global alvo, tentativas, tentativas_falhas, letras_usadas, dica_mensagem, dica_ativa, segunda_dica_ativa, acertou, categoria_api
+    global alvo, tentativas, tentativas_falhas, letras_usadas, dica_mensagem, dica_ativa, segunda_dica_ativa, acertou, categoria_api, complexidade_api, pontuacao
     
     # Obtém a palavra da API
     json_api = nova_palavra()
@@ -154,6 +175,7 @@ def jogo_forca():
     
     alvo = unidecode(palavra_api.lower())  # Remove acentos e converte para minúsculas
     tentativas, tentativas_falhas, letras_usadas = 0, 0, []
+    pontuacao = 0
     dica_ativa, segunda_dica_ativa, acertou = False, False, False
     dica_atualizar()
     
@@ -210,6 +232,7 @@ def desenho_forca(tentativas_falhas):
 # Função para exibir o menu e obter a escolha do usuário
 def menu_jogando():
     print("========== MENU DE OPÇÕES ==========")
+    print(f"Pontuação atual no jogo atual: {calcular_pontuacao()} pontos.")
     if not dica_ativa:
         print("Para receber uma dica de duas, pressione 1;")
     print("Para desistir do jogo, pressione 2;")
