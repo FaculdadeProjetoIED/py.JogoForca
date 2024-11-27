@@ -35,19 +35,31 @@ def nova_palavra():
         return None
 
 
+# Pn = (S+D)*(N+E)
 def calcular_pontuacao():
-    global pontuacao, alvo, complexidade_api, letras_usadas, tentativas_falhas
-    
-    # Variáveis necessárias
+    global alvo, complexidade_api, letras_usadas, tentativas_falhas
+
     S = len(alvo)  # Tamanho da palavra
     D = int(complexidade_api)  # Dificuldade (1, 2 ou 3)
     N = len([letra for letra in letras_usadas if letra in alvo])  # Tentativas assertivas
     E = 6 - tentativas_falhas  # Erros faltantes
-    
-    # Calcula os pontos
+
+    # Calcula os pontos da partida atual
     pontuacao_atual = (S + D) * (N + E)
-    pontuacao += pontuacao_atual  # Atualiza a pontuação global
     return pontuacao_atual
+
+
+# Ptotal = P1 + P2 + P3 + Pn
+def atualizar_pontuacao(pontos_ciclo):
+    global Ptotal, pontuacoes_ciclos, pontos_atualizados
+
+    # Verifica se já foi adicionado a pontuação total
+    if not pontos_atualizados:
+        # Adiciona a pontuação do ciclo na lista
+        pontuacoes_ciclos.append(pontos_ciclo)
+        # Define a pontuação total com o valor da pontuação do ciclo e define que a lista já foi atualizada
+        Ptotal += pontos_ciclo
+        pontos_atualizados = True
 
 
 # Função para exibir quantidade de letras da palavra
@@ -97,8 +109,9 @@ def verificacao_palpite(menu_opcao):
 # Função para exibir o resultado do jogo
 def exibe_resultado(acertou):
     if acertou:
-        # Calcula os pontos do jogo atual
+        # Calcula os pontos do ciclo atual
         pontos_ganhos = calcular_pontuacao()
+        atualizar_pontuacao(pontos_ganhos)
         print("\n\nParabéns. Você ganhou!")
         print(f"Com {tentativas} tentativas.")
         print(f"Você ganhou {pontos_ganhos} pontos neste jogo!")
@@ -107,7 +120,9 @@ def exibe_resultado(acertou):
         print("A palavra era:", alvo)
 
     # Exibe pontuação total acumulada
-    print(f"Sua pontuação total acumulada: {pontuacao} pontos.")
+    print("\n======== RESUMO DA PONTUAÇÃO ========")
+    print(f"Pontuações dos ciclos: {pontuacoes_ciclos}")
+    print(f"Pontuação total acumulada: {Ptotal} pontos.")
 
 
 # Função para verificar se o usuário ganhou o jogo
@@ -157,7 +172,7 @@ def processa_escolha_usuario(menu_opcao, acertou):
 
 # Função principal do jogo da forca
 def jogo_forca():
-    global alvo, tentativas, tentativas_falhas, letras_usadas, dica_mensagem, dica_ativa, segunda_dica_ativa, acertou, categoria_api, complexidade_api, pontuacao
+    global alvo, tentativas, tentativas_falhas, letras_usadas, dica_mensagem, dica_ativa, segunda_dica_ativa, acertou, categoria_api, complexidade_api, pontuacao_atual, pontos_atualizados
     
     # Obtém a palavra da API
     json_api = nova_palavra()
@@ -173,9 +188,10 @@ def jogo_forca():
         print("Não foi possível obter uma palavra para o jogo.")
         return
     
-    alvo = unidecode(palavra_api.lower())  # Remove acentos e converte para minúsculas
+    # Remove acentos e converte para minúsculas
+    alvo = unidecode(palavra_api.lower())
     tentativas, tentativas_falhas, letras_usadas = 0, 0, []
-    pontuacao = 0
+    pontuacao_atual, pontos_atualizados = 0, False
     dica_ativa, segunda_dica_ativa, acertou = False, False, False
     dica_atualizar()
     
@@ -299,7 +315,12 @@ def menu():
 
 # Função principal
 def main():
+    global Ptotal, pontuacoes_ciclos, pontos_atualizados
+
     os.system('cls')  # cls, pois a máquina de desenvolvimento é windows
+
+    Ptotal, pontuacoes_ciclos, pontos_atualizados = 0, [], False
+
     menu_loop = True
     while menu_loop:
         menu_loop = menu()
