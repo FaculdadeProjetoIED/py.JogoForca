@@ -325,7 +325,6 @@ def desenho_forca(tentativas_falhas):
 # Função para exibir o menu e obter a escolha do usuário
 def menu_jogando():
     print("========== MENU DE OPÇÕES ==========")
-    print(f"Pontuação atual no jogo atual: {calcular_pontuacao()} pontos.")
 
     if not dica_ativa:
         print("Para receber uma dica de duas, pressione 1;")
