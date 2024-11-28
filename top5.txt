@@ -1,1 +1,3 @@
-Teste,82
+Mirto,233
+Ryan,232
+Thomaz,231
