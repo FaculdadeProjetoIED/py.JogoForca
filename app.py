@@ -219,7 +219,7 @@ def verificacao_vitoria():
 # Função para processar a escolha do usuário
 def processa_escolha_usuario(menu_opcao, acertou):
     global dica_mensagem, dica_ativa, tentativas, segunda_dica_ativa
-    if tentativas_falhas >= 5:
+    if tentativas_falhas >= 5 and menu_opcao not in letras_usadas:
         verificacao_palpite(menu_opcao)
         limpar_terminal()
         exibe_resultado(False)
